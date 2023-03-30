@@ -1,0 +1,57 @@
+on:
+  push:
+    branches: ["main", "dev"]
+  pull_request:
+    branches: ["main", "dev"]
+
+name: CI
+
+env:
+  RUST_BACKTRACE: 1
+  rust_stable: stable
+  rust_min: 1.68.0
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: test libs full
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install Rust ${{ env.rust_stable }} ${{ env.rust_min }}
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.rust_min }}
+          override: true
+          components: rustfmt, clippy
+
+      - name: Install cargo-make
+        uses: actions-rs/cargo@v1
+        with:
+          command: install
+          args: --force cargo-make
+
+      - name: Run CI
+        uses: actions-rs/cargo@v1
+        with:
+          command: make
+          args: ci
