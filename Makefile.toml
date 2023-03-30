@@ -14,3 +14,18 @@ dependencies = [
     "format-check",
     "test"
 ]
+
+[tasks.test]
+command = "cargo"
+args = ["test", "-v", "--all-features"]
+
+[tasks.fix]
+command = "cargo"
+args = [
+    "fix",
+    "--workspace",
+    "-v",
+    "--allow-dirty",
+    "--allow-staged",
+    "--tests"
+]
