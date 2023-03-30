@@ -1,0 +1,22 @@
+[package]
+name = "lark-sdk"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.58"
+
+authors = ["Haiker Zhou <ni@renzhen.la>"]
+license = "MIT"
+readme = "../README.md"
+repository = "https://github.com/xhaiker/lark"
+homepage = "https://ihaiker.github.io/lark"
+description = """
+飞书开放平台SDK。包含了飞书开放平台的所有API，以及飞书开放平台的所有事件类型。
+"""
+categories = ["network-programming","io","web-programming","development-tools"]
+keywords = ["lark", "feishu", "sdk", "server"]
+
+[features]
+
+default = []
+
+[dependencies]
