@@ -1,0 +1,24 @@
+[config]
+skip_core_tasks = false
+
+[tasks.default]
+run_task = "build"
+
+[tasks.format]
+install_crate = "rustfmt"
+command = "cargo"
+args = ["fmt", "--", "--emit=files"]
+
+[tasks.build]
+command = "cargo"
+args = [
+    "build"
+]
+
+[tasks.fix]
+command = "cargo"
+args = [
+    "fix",
+    "--allow-dirty",
+    "--allow-staged"
+]
