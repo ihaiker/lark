@@ -52,6 +52,9 @@ jobs:
 
       - name: Run CI
         uses: actions-rs/cargo@v1
+        env:
+          LARK_APP_ID: ${{ secrets.LARK_APP_ID }}
+          LARK_APP_SECRET: ${{ secrets.LARK_APP_SECRET }}
         with:
           command: make
           args: ci
