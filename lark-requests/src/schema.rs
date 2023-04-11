@@ -291,7 +291,8 @@ mod response_tests {
 /// 例如：
 /// ```rust
 ///     use bytes::Bytes;
-///     use lark_requests::{Body, FlattenResponse, Request};
+///     use lark_requests::{Body, FlattenResponse, Request,Result};
+///
 ///     #[derive(serde::Serialize, Debug)]
 ///     struct GetTenantAccessTokenRequest {
 ///         app_id: String,
@@ -309,9 +310,9 @@ mod response_tests {
 ///             "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal/"
 ///         }
 ///
-///         fn body(&self) -> Option<Bytes> {
+///         fn body(&self) -> Result<Option<bytes::Bytes>> {
 ///             let body = serde_json::to_string(self).unwrap();
-///             Some(Bytes::from(body))
+///             Ok(Some(Bytes::from(body)))
 ///         }
 ///     }
 ///
@@ -326,29 +327,32 @@ mod response_tests {
 ///
 /// ```
 pub trait Request: serde::Serialize {
+    /// 响应的类型
     type Target: Response;
 
-    fn method(&self) -> reqwest::Method;
+    fn method(&self) -> reqwest::Method {
+        reqwest::Method::POST
+    }
 
     fn address(&self) -> &str;
 
     /// 地址路径上的参数对
-    fn path_params(&self) -> Option<HashMap<&str, String>> {
+    fn path_params(&self) -> Option<HashMap<String, String>> {
         None
     }
 
     /// 请求需要添加的查询参数
-    fn query_params(&self) -> Option<Vec<(&str, String)>> {
+    fn query_params(&self) -> Option<Vec<(String, String)>> {
         None
     }
 
     /// 请求需要添加的头信息
-    fn headers(&self) -> Option<Vec<(&str, String)>> {
+    fn headers(&self) -> Option<Vec<(String, String)>> {
         None
     }
 
     /// 请求需要添加的body
-    fn body(&self) -> Option<bytes::Bytes> {
-        None
+    fn body(&self) -> crate::Result<Option<bytes::Bytes>> {
+        Ok(None)
     }
 }

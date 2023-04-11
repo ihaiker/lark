@@ -28,7 +28,15 @@ use std::collections::HashMap;
 use regex::Regex;
 
 /// 替换地址路径参数
-pub fn replace_path_params<'t>(path: &'t str, params: &HashMap<&str, String>) -> Cow<'t, str> {
+/// ```rust
+/// use std::collections::HashMap;
+/// let path = "/v1/tenants/:tenant_id";
+/// let mut params = HashMap::default();
+/// params.insert("tenant_id".to_string(), "123".to_string());
+/// let replaced_path = lark_requests::utils::replace_path_params(path, &params);
+/// assert_eq!(replaced_path, "/v1/tenants/123");
+/// ```
+pub fn replace_path_params<'t>(path: &'t str, params: &HashMap<String, String>) -> Cow<'t, str> {
     let re = Regex::new(r":(\w+)").unwrap();
     re.replace_all(path, |caps: &regex::Captures| match params.get(&caps[1]) {
         Some(value) => value.to_string(),
@@ -45,7 +53,7 @@ mod tests {
         {
             let path = "/v1/tenants/:tenant_id";
             let mut params = HashMap::default();
-            params.insert("tenant_id", "123".to_string());
+            params.insert("tenant_id".to_string(), "123".to_string());
 
             let replaced_path = super::replace_path_params(path, &params);
             assert_eq!(replaced_path, "/v1/tenants/123");
@@ -54,8 +62,8 @@ mod tests {
         {
             let path = "/v1/:id/:id2";
             let mut params = HashMap::default();
-            params.insert("id", "1".to_string());
-            params.insert("id2", "2".to_string());
+            params.insert("id".to_string(), "1".to_string());
+            params.insert("id2".to_string(), "2".to_string());
 
             let replaced_path = super::replace_path_params(path, &params);
             assert_eq!(replaced_path, "/v1/1/2");

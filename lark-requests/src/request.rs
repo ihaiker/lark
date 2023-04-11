@@ -76,7 +76,7 @@ impl Client {
         }
 
         // 处理请求体
-        if let Some(body) = req.body() {
+        if let Some(body) = req.body()? {
             request = request.body(body);
         }
 
@@ -118,9 +118,9 @@ mod tests {
             "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal/"
         }
 
-        fn body(&self) -> Option<Bytes> {
-            let body = serde_json::to_string(self).unwrap();
-            Some(Bytes::from(body))
+        fn body(&self) -> crate::Result<Option<Bytes>> {
+            let b = serde_json::to_vec(self).map(|v| Bytes::from(v))?;
+            Ok(Some(b))
         }
     }
 

@@ -25,6 +25,7 @@
 pub use errors::*;
 pub use request::*;
 pub use schema::*;
+pub use serialize::*;
 
 mod errors;
 
@@ -33,4 +34,5 @@ pub mod blocking;
 
 mod request;
 mod schema;
+mod serialize;
 pub mod utils;
