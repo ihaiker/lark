@@ -1,5 +1,6 @@
 [workspace]
 members = [
     "lark-requests",
+    "lark-requests-macros",
     "lark-sdk"
 ]

@@ -1,0 +1,35 @@
+[package]
+name = "lark-requests-macros"
+version = "0.1.0"
+edition = "2021"
+
+authors = ["Haiker Zhou <ni@renzhen.la>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/xhaiker/lark"
+homepage = "https://ihaiker.github.io/lark"
+description = """
+飞书开放平台Rust SDK请求部分实现。通过 `lark-requests-macros` 可以方便的编写rust请求和返回内容.
+"""
+categories = ["network-programming", "io", "web-programming", "development-tools"]
+keywords = ["lark", "feishu", "sdk", "request", "http", "client", "api"]
+
+
+[dependencies]
+proc-macro2 = { version = "1.0.54", features = ["proc-macro"] }
+syn = { version = "2.0.11", features = ["full"] }
+quote = "1.0.26"
+
+
+[dependencies.lark-requests]
+path = "../lark-requests"
+version = "0.1.0"
+
+[lib]
+proc-macro = true
+
+[dev-dependencies]
+bytes = { version = "1.4.0", features = ["serde"] }
+reqwest = "0.11.16"
+serde = { version = "1.0.159", features = ["derive"] }
+serde_json = "1.0.95"
